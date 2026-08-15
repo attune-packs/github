@@ -1,0 +1,27 @@
+ref: github.repository_list
+label: "List Repositories"
+description: "List bounded repositories for one explicit user or organization"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: github_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  credential_key: {type: string, default: github.credentials, required: true}
+  owner: {type: string, required: true}
+  owner_type: {type: string, enum: [organization, user], required: true}
+  type: {type: string, enum: [all, forks, member, private, public, sources]}
+  sort: {type: string, enum: [created, full_name, pushed, updated]}
+  direction: {type: string, enum: [asc, desc]}
+  per_page: {type: integer, minimum: 1, maximum: 100, default: 100}
+  max_results: {type: integer, minimum: 1, maximum: 1000, default: 500}
+  timeout_seconds: {type: integer, minimum: 1, maximum: 120, default: 30}
+  read_retries: {type: integer, minimum: 0, maximum: 2, default: 1}
+output:
+  operation: {type: string}
+  data: {type: any}
+  meta: {type: object}
+tags: [github, repository, list]

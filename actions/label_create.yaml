@@ -1,0 +1,25 @@
+ref: github.label_create
+label: "Create Label"
+description: "Create a repository label with a validated RGB color"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: github_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  credential_key: {type: string, default: github.credentials, required: true}
+  owner: {type: string, required: true}
+  repository: {type: string, required: true}
+  name: {type: string, required: true}
+  color: {type: string, pattern: "^[0-9A-Fa-f]{6}$", required: true}
+  description: {type: string}
+  timeout_seconds: {type: integer, minimum: 1, maximum: 120, default: 30}
+  read_retries: {type: integer, minimum: 0, maximum: 2, default: 1}
+output:
+  operation: {type: string}
+  data: {type: any}
+  meta: {type: object}
+tags: [github, issue, label, create]

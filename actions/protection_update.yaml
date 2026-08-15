@@ -1,0 +1,26 @@
+ref: github.protection_update
+label: "Replace Branch Protection"
+description: "Replace complete branch protection only at an expected ETag and exact confirmation"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: github_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  credential_key: {type: string, default: github.credentials, required: true}
+  owner: {type: string, required: true}
+  repository: {type: string, required: true}
+  branch: {type: string, required: true}
+  expected_etag: {type: string, required: true}
+  protection: {type: object, required: true, description: "Complete GitHub replacement body, including all four required nullable top-level fields"}
+  confirmation: {type: string, required: true, description: "UPDATE_PROTECTION:<owner>/<repository>:<branch>:<expected_etag>"}
+  timeout_seconds: {type: integer, minimum: 1, maximum: 120, default: 30}
+  read_retries: {type: integer, minimum: 0, maximum: 2, default: 1}
+output:
+  operation: {type: string}
+  data: {type: any}
+  meta: {type: object}
+tags: [github, branch, protection, replace, destructive]

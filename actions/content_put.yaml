@@ -1,0 +1,30 @@
+ref: github.content_put
+label: "Create or Update Content"
+description: "Create or SHA-guardedly update one repository content path"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: github_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  credential_key: {type: string, default: github.credentials, required: true}
+  owner: {type: string, required: true}
+  repository: {type: string, required: true}
+  path: {type: string, required: true}
+  message: {type: string, required: true}
+  content: {type: string, required: true, secret: true}
+  content_encoding: {type: string, enum: [base64, utf-8], default: utf-8}
+  sha: {type: string, description: "Required existing blob SHA when updating"}
+  branch: {type: string}
+  committer_name: {type: string}
+  committer_email: {type: string}
+  timeout_seconds: {type: integer, minimum: 1, maximum: 120, default: 30}
+  read_retries: {type: integer, minimum: 0, maximum: 2, default: 1}
+output:
+  operation: {type: string}
+  data: {type: any}
+  meta: {type: object}
+tags: [github, content, commit, write]

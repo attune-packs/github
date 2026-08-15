@@ -1,0 +1,26 @@
+ref: github.release_asset_upload
+label: "Upload Release Asset"
+description: "Upload one regular non-symlink file confined beneath ATTUNE_ARTIFACTS_DIR"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: github_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  credential_key: {type: string, default: github.credentials, required: true}
+  owner: {type: string, required: true}
+  repository: {type: string, required: true}
+  release_id: {type: integer, minimum: 1, required: true}
+  name: {type: string, required: true}
+  content_type: {type: string, required: true}
+  artifact_path: {type: string, required: true, description: "Existing relative file beneath ATTUNE_ARTIFACTS_DIR"}
+  timeout_seconds: {type: integer, minimum: 1, maximum: 120, default: 30}
+  read_retries: {type: integer, minimum: 0, maximum: 2, default: 1}
+output:
+  operation: {type: string}
+  data: {type: any}
+  meta: {type: object}
+tags: [github, release, asset, upload]

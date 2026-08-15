@@ -1,0 +1,11 @@
+GitHub Hosting Platform Attune Pack
+Copyright 2026 Attune
+
+This product includes adapted work from the StackStorm Exchange GitHub pack,
+version 2.1.5, revision fc8e45bd25bcfdd891f3e88e0b87f7592fe7f634,
+originally authored by StackStorm, Inc. and contributors and distributed under
+the Apache License, Version 2.0.
+
+The adaptation replaces the StackStorm runners, configuration, authentication,
+HTTP client, and sensor model. See SOURCE.md for source and API verification and
+README.md for behavioral and security differences.

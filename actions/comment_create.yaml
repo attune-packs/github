@@ -1,0 +1,24 @@
+ref: github.comment_create
+label: "Create Issue Comment"
+description: "Create a comment on one issue or pull request"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: github_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  credential_key: {type: string, default: github.credentials, required: true}
+  owner: {type: string, required: true}
+  repository: {type: string, required: true}
+  issue_number: {type: integer, minimum: 1, required: true}
+  body: {type: string, required: true}
+  timeout_seconds: {type: integer, minimum: 1, maximum: 120, default: 30}
+  read_retries: {type: integer, minimum: 0, maximum: 2, default: 1}
+output:
+  operation: {type: string}
+  data: {type: any}
+  meta: {type: object}
+tags: [github, issue, comment, create]

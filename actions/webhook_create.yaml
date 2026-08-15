@@ -1,0 +1,26 @@
+ref: github.webhook_create
+label: "Create Repository Webhook"
+description: "Create a JSON webhook to an exact allowlisted HTTPS host using the Key-owned secret"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: github_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  credential_key: {type: string, default: github.credentials, required: true}
+  owner: {type: string, required: true}
+  repository: {type: string, required: true}
+  webhook_url: {type: string, required: true, description: "HTTPS URL on an exact credential webhook_host_allowlist host; query strings are forbidden"}
+  events: {type: array, items: {type: string}, required: true}
+  active: {type: boolean, default: true}
+  confirmation: {type: string, required: true, description: "CREATE_WEBHOOK:<owner>/<repository>:<hostname>:<sorted,events>"}
+  timeout_seconds: {type: integer, minimum: 1, maximum: 120, default: 30}
+  read_retries: {type: integer, minimum: 0, maximum: 2, default: 1}
+output:
+  operation: {type: string}
+  data: {type: any}
+  meta: {type: object}
+tags: [github, repository, webhook, create, confirmed]

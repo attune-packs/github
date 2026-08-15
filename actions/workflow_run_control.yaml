@@ -1,0 +1,25 @@
+ref: github.workflow_run_control
+label: "Control Workflow Run"
+description: "Cancel or rerun one workflow run after exact control/repository/run confirmation"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: github_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  credential_key: {type: string, default: github.credentials, required: true}
+  owner: {type: string, required: true}
+  repository: {type: string, required: true}
+  run_id: {type: integer, minimum: 1, required: true}
+  control: {type: string, enum: [cancel, rerun, rerun-failed-jobs], required: true}
+  confirmation: {type: string, required: true, description: "WORKFLOW_RUN:<uppercase-control>:<owner>/<repository>:<run_id>"}
+  timeout_seconds: {type: integer, minimum: 1, maximum: 120, default: 30}
+  read_retries: {type: integer, minimum: 0, maximum: 2, default: 1}
+output:
+  operation: {type: string}
+  data: {type: any}
+  meta: {type: object}
+tags: [github, actions, workflow-run, control, confirmed]

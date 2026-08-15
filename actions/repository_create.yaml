@@ -1,0 +1,38 @@
+ref: github.repository_create
+label: "Create Repository"
+description: "Create a repository for one explicit user or organization"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: github_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  credential_key: {type: string, default: github.credentials, required: true}
+  owner: {type: string, required: true, description: "Organization or authenticated user login"}
+  owner_type: {type: string, enum: [organization, user], required: true}
+  name: {type: string, required: true}
+  description: {type: string}
+  homepage: {type: string}
+  private: {type: boolean}
+  visibility: {type: string, enum: [private, public, internal]}
+  has_issues: {type: boolean}
+  has_projects: {type: boolean}
+  has_wiki: {type: boolean}
+  is_template: {type: boolean}
+  auto_init: {type: boolean}
+  gitignore_template: {type: string}
+  license_template: {type: string}
+  allow_squash_merge: {type: boolean}
+  allow_merge_commit: {type: boolean}
+  allow_rebase_merge: {type: boolean}
+  delete_branch_on_merge: {type: boolean}
+  timeout_seconds: {type: integer, minimum: 1, maximum: 120, default: 30}
+  read_retries: {type: integer, minimum: 0, maximum: 2, default: 1}
+output:
+  operation: {type: string}
+  data: {type: any}
+  meta: {type: object}
+tags: [github, repository, create]

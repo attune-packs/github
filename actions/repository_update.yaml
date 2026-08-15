@@ -1,0 +1,38 @@
+ref: github.repository_update
+label: "Update Repository"
+description: "Update selected settings on one explicitly scoped repository"
+enabled: true
+runner_type: python
+runtime_version: ">=3.10"
+entry_point: github_action.py
+parameter_delivery: stdin
+parameter_format: json
+output_format: json
+default_execution_permission_set_refs: [standard]
+parameters:
+  credential_key: {type: string, default: github.credentials, required: true}
+  owner: {type: string, required: true}
+  repository: {type: string, required: true}
+  name: {type: string}
+  description: {type: string}
+  homepage: {type: string}
+  private: {type: boolean}
+  visibility: {type: string, enum: [private, public, internal]}
+  has_issues: {type: boolean}
+  has_projects: {type: boolean}
+  has_wiki: {type: boolean}
+  is_template: {type: boolean}
+  default_branch: {type: string}
+  allow_squash_merge: {type: boolean}
+  allow_merge_commit: {type: boolean}
+  allow_rebase_merge: {type: boolean}
+  delete_branch_on_merge: {type: boolean}
+  archived: {type: boolean}
+  expected_etag: {type: string, description: "Optional If-Match ETag"}
+  timeout_seconds: {type: integer, minimum: 1, maximum: 120, default: 30}
+  read_retries: {type: integer, minimum: 0, maximum: 2, default: 1}
+output:
+  operation: {type: string}
+  data: {type: any}
+  meta: {type: object}
+tags: [github, repository, update]

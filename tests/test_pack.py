@@ -150,8 +150,7 @@ class MetadataTests(unittest.TestCase):
 
     def test_dependencies_are_declared_and_pinned_or_bounded(self):
         requirements = (ROOT / "requirements.txt").read_text(encoding="utf-8")
-        self.assertIn("attune-sdk @ git+https://", requirements)
-        self.assertIn("@841298f132d9f6af6b7afc2f7091db1f3460b9c9", requirements)
+        self.assertIn("attune-sdk>=0.3.0,<1.0.0", requirements)
         self.assertRegex(requirements, r"requests>=.+,<")
         self.assertRegex(requirements, r"cryptography>=.+,<")
 

@@ -10,7 +10,7 @@ parameter_format: json
 output_format: json
 default_execution_permission_set_refs: [standard]
 parameters:
-  credential_key: {type: string, default: github.credentials, required: true}
+  credential_key: {type: string, default: pack.github.credentials, required: true}
   owner: {type: string, required: true}
   owner_type: {type: string, enum: [organization, user], required: true}
   type: {type: string, enum: [all, forks, member, private, public, sources]}

@@ -19,9 +19,14 @@ All API requests send:
 
 - Python 3.10 or newer on the selected Attune worker.
 - Network access to `https://api.github.com`, or to a reviewed GHES API origin.
-- An encrypted, pack-owned Attune Key, normally `github.credentials`.
+- An encrypted, pack-owned Attune Key, normally `pack.github.credentials`.
 - GitHub permissions scoped to the specific actions, owners, and repositories.
 - `ATTUNE_ARTIFACTS_DIR` for release-asset and Actions-artifact transfers.
+
+Create the credential Key with `local_ref: credentials`, `name`,
+`owner_type: pack`, `owner_pack_ref: github`, and one of the profiles below as
+`value`. Attune constructs the canonical `pack.github.credentials` ref used by
+actions.
 
 ## Authentication Preference
 

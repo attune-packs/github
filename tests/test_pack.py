@@ -115,7 +115,7 @@ class MetadataTests(unittest.TestCase):
                 for field, value in expected.items():
                     self.assertRegex(text, rf"(?m)^{field}: {re.escape(value)}$")
                 self.assertIn("default_execution_permission_set_refs: [standard]", text)
-                self.assertRegex(text, r"credential_key: \{[^\n]*default: github\.credentials[^\n]*\}")
+                self.assertRegex(text, r"credential_key: \{[^\n]*default: pack\.github\.credentials[^\n]*\}")
                 for field in ("operation", "data", "meta"):
                     self.assertRegex(text, rf"(?m)^  {field}: \{{type:")
                 self.assertNotRegex(text, r"(?m)^  (token|private_key|base_url|webhook_secret):")
@@ -440,7 +440,8 @@ class KeyAndEntryPointTests(unittest.TestCase):
         fake_attune = types.ModuleType("attune")
         fake_attune.context = types.SimpleNamespace(client=object())
         fake_secrets = types.ModuleType("attune.api_client.api.secrets")
-        fake_secrets.get_key = types.SimpleNamespace(sync_detailed=mock.Mock(return_value=types.SimpleNamespace(status_code=200, parsed=parsed)))
+        sync_detailed = mock.Mock(return_value=types.SimpleNamespace(status_code=200, parsed=parsed))
+        fake_secrets.get_key = types.SimpleNamespace(sync_detailed=sync_detailed)
         modules = {
             "attune": fake_attune,
             "attune.api_client": types.ModuleType("attune.api_client"),
@@ -448,10 +449,11 @@ class KeyAndEntryPointTests(unittest.TestCase):
             "attune.api_client.api.secrets": fake_secrets,
         }
         with mock.patch.dict(sys.modules, modules):
-            self.assertEqual("fine_grained", github._fetch_key("github.credentials")["token_kind"])
+            self.assertEqual("fine_grained", github._fetch_key("pack.github.credentials")["token_kind"])
+        sync_detailed.assert_called_once_with("pack.github.credentials", client=fake_attune.context.client)
         with mock.patch.dict(sys.modules, {"attune": None}):
             with self.assertRaises(github.GitHubPackError) as caught:
-                github._fetch_key("github.credentials")
+                github._fetch_key("pack.github.credentials")
         self.assertNotIn("secret", str(caught.exception).lower())
 
     def test_entry_point_never_echoes_parameters_or_unknown_errors(self):

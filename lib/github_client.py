@@ -21,7 +21,7 @@ import requests
 
 
 API_VERSION = "2026-03-10"
-DEFAULT_CREDENTIAL_KEY = "github.credentials"
+DEFAULT_CREDENTIAL_KEY = "pack.github.credentials"
 GITHUB_API_URL = "https://api.github.com"
 GITHUB_UPLOAD_URL = "https://uploads.github.com"
 MAX_RESPONSE_BYTES = 16 * 1024 * 1024
@@ -42,7 +42,7 @@ def _fetch_key(key_ref: str) -> dict[str, Any]:
         import attune
         from attune.api_client.api.secrets import get_key
 
-        response = get_key.sync_detailed(client=attune.context.client, key_ref=key_ref)
+        response = get_key.sync_detailed(key_ref, client=attune.context.client)
     except Exception as exc:
         raise GitHubPackError(f"could not read GitHub credential Key ({type(exc).__name__})") from None
     if response.status_code != 200 or response.parsed is None:
